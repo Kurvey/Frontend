@@ -13,7 +13,7 @@ export default function SignUp(props) {
   )
   const dispatch = useDispatch()
 
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
 
   useEffect(() => {

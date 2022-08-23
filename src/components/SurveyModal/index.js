@@ -1,25 +1,21 @@
 import {useState} from 'react';
+import {useForm} from 'react-hook-form';
+import {useSelector} from 'react-redux';
 
 import styles from './survey-modal.module.css';
-
-import {useSelector} from 'react-redux';
 import {surveySelector} from '../../features/survey/surveySlice';
 
 export default function SurveyModal({close}) {
-  const [family, setFamily] = useState(null);
-  const [isBaby, setIsBaby] = useState(false);
-  const [isDog, setIsDog] = useState(false);
-  const [isCat, setIsCat] = useState(false);
-  const [isPlant, setIsPlant] = useState(false);
   const [lifeStyles, setLifeStyles] = useState(new Set());
 
+  const {register, handleSubmit} = useForm();
   const surveyList = useSelector(surveySelector).data;
-  
-  const submit = () => {
-    console.log(family, isBaby, isDog, isCat, isPlant);
-    console.log(lifeStyles);
-    console.log('surveyList', surveyList);
 
+  const submitForm = (data) => {
+    const req = {
+      ...data,
+      select: surveyList
+    }
     close();
   };
 
@@ -71,13 +67,14 @@ export default function SurveyModal({close}) {
 
   return (
     <div id="myModal" className={styles.modal}>
-      <div className={styles.modalContent}>
+      <form onSubmit={handleSubmit(submitForm)} className={styles.modalContent}>
         <div className={styles.inputBox}>
           가족은 구성원이 몇 명인가요?
           <input
             type="number"
             className={styles.inputNumber}
-            onChange={e => setFamily(e.target.value)}
+            {...register('numberOfFamily')}
+            required
           />
           명
         </div>
@@ -86,8 +83,8 @@ export default function SurveyModal({close}) {
           <input
             type="checkbox"
             id="check1"
-            checked={isBaby}
-            onChange={e => setIsBaby(e.target.checked)}
+            {...register('hasBaby')}
+            required
           />
           <label htmlFor="check1"></label>
         </div>
@@ -99,8 +96,8 @@ export default function SurveyModal({close}) {
               <input
                 type="checkbox"
                 id="dog"
-                checked={isDog}
-                onChange={e => setIsDog(e.target.checked)}
+
+               {...register('hasDog')}
               />
               <label htmlFor="dog"></label>
             </div>
@@ -109,8 +106,7 @@ export default function SurveyModal({close}) {
               <input
                 type="checkbox"
                 id="cat"
-                checked={isCat}
-                onChange={e => setIsCat(e.target.checked)}
+                {...register('hasCat')}
               />
               <label htmlFor="cat"></label>
             </div>
@@ -119,8 +115,7 @@ export default function SurveyModal({close}) {
               <input
                 type="checkbox"
                 id="plant"
-                checked={isPlant}
-                onChange={e => setIsPlant(e.target.checked)}
+                {...register('hasPlant')}
               />
               <label htmlFor="plant"></label>
             </div>
@@ -131,6 +126,7 @@ export default function SurveyModal({close}) {
           {/* 버튼 OR 체크박스 */}
           <div className={styles.lifeStyleBox}>
             <button
+              type="button"
               onClick={() => lifeStyleOnClick(surveyList[0].id)}
               className="lifeStyleButton"
             >
@@ -141,6 +137,7 @@ export default function SurveyModal({close}) {
               <p>{surveyList[0].question}</p>
             </button>{' '}
             <button
+              type="button"
               onClick={() => lifeStyleOnClick(surveyList[1].id)}
               className="lifeStyleButton"
             >
@@ -151,6 +148,7 @@ export default function SurveyModal({close}) {
               <p>{surveyList[1].question}</p>
             </button>{' '}
             <button
+              type="button"
               onClick={() => lifeStyleOnClick(surveyList[2].id)}
               className="lifeStyleButton"
             >
@@ -161,6 +159,7 @@ export default function SurveyModal({close}) {
               <p>{surveyList[2].question}</p>
             </button>{' '}
             <button
+              type="button"
               onClick={() => lifeStyleOnClick(surveyList[3].id)}
               className="lifeStyleButton"
             >
@@ -173,6 +172,7 @@ export default function SurveyModal({close}) {
           </div>
           <div className={styles.lifeStyleBox}>
             <button
+              type="button"
               onClick={() => lifeStyleOnClick(surveyList[4].id)}
               className="lifeStyleButton"
             >
@@ -183,6 +183,7 @@ export default function SurveyModal({close}) {
               <p>{surveyList[4].question}</p>
             </button>{' '}
             <button
+              type="button"
               onClick={() => lifeStyleOnClick(surveyList[5].id)}
               className="lifeStyleButton"
             >
@@ -193,6 +194,7 @@ export default function SurveyModal({close}) {
               <p>{surveyList[5].question}</p>
             </button>{' '}
             <button
+              type="button"
               onClick={() => lifeStyleOnClick(surveyList[6].id)}
               className="lifeStyleButton"
             >
@@ -204,10 +206,10 @@ export default function SurveyModal({close}) {
             </button>
           </div>
         </div>
-        <button className={styles.save} onClick={submit}>
+        <button type="submit" className={styles.save}>
           저장
         </button>
-      </div>
+      </form>
     </div>
   );
 }

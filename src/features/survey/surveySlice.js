@@ -27,8 +27,7 @@ export const getSurveyAsync = data => async dispatch => {
 
 // export const saveSurveyAsync = data => async dispatch => {
 //   try {
-//     // console.log(data);
-//     const response = await axios.post(API_URL + '/lifestyle', data);
+//     const response = await axios.post(API_URL + `/lifestyle/${userId}`, data);
 //     console.log(response);
 //     dispatch(saveSurvey(response.data));
 //   } catch (err) {
