@@ -8,7 +8,7 @@ on: # 이벤트 트리거
     branches: # branches 설정
       - develop
 
-job:
+jobs:
   build:
     runs-on: ubuntu-18.04
 
